@@ -8,12 +8,12 @@
 <body class="container">
    <form action="#" method="post" class="row g-3">
   <div class="col-md-6">
-    <label for="inputEmail4" class="form-label">First Name</label>
-    <input type="email" name="First Name" class="form-control" id="inputEmail4">
+    <label for="inputFirstName" class="form-label">First Name</label>
+    <input type="name" name="First Name" class="form-control" id="inputFirstName">
   </div>
   <div class="col-md-6">
-    <label for="inputPassword4" class="form-label">Last Name</label>
-    <input type="password" name="Last Name" class="form-control" id="inputPassword4">
+    <label for="inputLastName" class="form-label">Last Name</label>
+    <input type="name" name="Last Name" class="form-control" id="inputLastName">
   </div>
   <div class="col-12">
     <label for="inputAddress" class="form-label">Address</label>
