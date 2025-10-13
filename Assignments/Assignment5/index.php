@@ -1,42 +1,12 @@
 <?php
-
 require_once __DIR__ . '/Classes/Directories.php';
 
-$message = '';
-$link = '';
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $dirname = $_POST['dirname'] ?? '';
-    $filecontent = $_POST['filecontent'] ?? '';
-
-    $dir = new Directories();
-    $result = $dir->createDirectoryWithFile($dirname, $filecontent);
-
-    if ($result['success']) {
-        $link = '?view=' . urlencode($dirname);
-    } else {
-        $message = $result['message'];
-    }
-}
-
-// Handle viewing of readme.txt
-if (isset($_GET['view'])) {
-    $viewDir = $_GET['view'];
-    if (preg_match('/^[A-Za-z]+$/', $viewDir)) {
-        $filepath = __DIR__ . '/Directories/' . $viewDir . '/readme.txt';
-        if (file_exists($filepath)) {
-            header('Content-Type: text/plain');
-            readfile($filepath);
-            exit;
-        }
-    }
-    echo "Invalid file path.";
-    exit;
-}
-
+$dir = new Directories();
+$dir->handleRequest();
 ?>
+
 <!doctype html>
+<html>
 <head>
     <meta charset="utf-8">
     <title>File and Directories</title>
@@ -44,24 +14,24 @@ if (isset($_GET['view'])) {
 </head>
 <body>
 <h1>File and Directory Assignment</h1>
-<p>Enter a folder name and the contents of a file. Folder names should contain alpha numaric characters only.</p>
-<?php if ($link): ?>
-    <p><a href="<?= htmlspecialchars($link) ?>">Path where the file is located</a></p>
+<p>Enter a folder name and the contents of a file. Folder names should contain alphanumeric characters only.</p>
+
+<?php if ($dir->link): ?>
+    <p><a href="<?= htmlspecialchars($dir->link) ?>">Path where the file is located</a></p>
 <?php endif; ?>
 
-<?php if ($message): ?>
-    <p style="color: red;"><?= htmlspecialchars($message) ?></p>
+<?php if ($dir->message): ?>
+    <p style="color: red;"><?= htmlspecialchars($dir->message) ?></p>
 <?php endif; ?>
 
 <form method="post">
     <label for="dirname">Directory Name:</label><br>
-    <input type="text" name="dirname" id="dirname" required><br><br>
+    <input type="text" name="dirname" id="dirname" value="<?= htmlspecialchars($dir->dirname) ?>" required><br><br>
 
     <label for="filecontent">File Content:</label><br>
-    <textarea name="filecontent" id="filecontent" rows="10" cols="50" required></textarea><br><br>
+    <textarea name="filecontent" id="filecontent" rows="10" cols="50" required><?= htmlspecialchars($dir->filecontent) ?></textarea><br><br>
 
     <input type="submit" value="Submit">
 </form>
-
 </body>
 </html>
