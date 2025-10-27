@@ -1,7 +1,6 @@
 <?php
 
 function addAndSortNames() {
-    // If clear was clicked, return empty string
     if (isset($_POST['clear'])) {
         return '';
     }
@@ -10,7 +9,6 @@ function addAndSortNames() {
     $namesArray = [];
 
     if (!empty($previousList)) {
-        // Convert list to array
         $namesArray = explode("\n", trim($previousList));
     }
 

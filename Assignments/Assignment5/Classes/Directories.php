@@ -1,5 +1,8 @@
 <?php
 
+//Explain the benefits of organizing file and directory operations into a class structure. How does this approach improve code organization,
+//reusability, and maintainability compared to writing all operations in procedural code?
+
 class Directories
 {
     private $basePath;
@@ -8,15 +11,13 @@ class Directories
     public $dirname = '';
     public $filecontent = '';
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->basePath = __DIR__ . '/../Directories/';
-        $this->ensureBasePathExists(); // Make sure folder exists
+        $this->ensureBasePathExists();
     }
-
-    public function handleRequest()
-    {
-        // If form was submitted
+//Describe the flow of data from an HTML form submission to PHP processing.
+//How does PHP access form data, and what considerations should developers keep in mind when handling user input from forms?
+    public function handleRequest(){
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->dirname = strtolower(basename($_POST['dirname'] ?? ''));
             $this->filecontent = $_POST['filecontent'] ?? '';
@@ -30,7 +31,6 @@ class Directories
             }
         }
 
-        // If user clicked to view the file
         if (isset($_GET['view'])) {
             $this->serveReadme($_GET['view']);
         }
@@ -39,12 +39,14 @@ class Directories
     private function ensureBasePathExists()
     {
         if (!is_dir($this->basePath)) {
-            mkdir($this->basePath, 0777, true); // Create if missing
+            mkdir($this->basePath, 0777, true);
         }
     }
 
-    private function createDirectoryWithFile($dirname, $content)
-    {
+
+//Explain the difference between creating a directory and creating a file in PHP.
+//What PHP functions are used for each operation, and why is it important to check if a directory already exists before attempting to create it?
+    private function createDirectoryWithFile($dirname, $content){
         if (!preg_match('/^[A-Za-z0-9]+$/', $dirname)) {
             return [
                 'success' => false,
@@ -61,6 +63,7 @@ class Directories
             ];
         }
 
+//Why did we use 777 permissions and what should we use and why?
         if (!mkdir($targetDir, 0777, true)) {
             return [
                 'success' => false,
@@ -70,6 +73,8 @@ class Directories
 
         $filePath = $targetDir . '/readme.txt';
 
+// Why is it important to properly close file handles after writing to files? What problems can occur if file
+// handles are not closed, and how does this relate to system resource management?
         if (file_put_contents($filePath, $content) === false) {
             return [
                 'success' => false,
@@ -83,8 +88,7 @@ class Directories
         ];
     }
 
-    private function serveReadme($dirname)
-    {
+    private function serveReadme($dirname){
         $dirname = strtolower(basename($dirname));
 
         if (!preg_match('/^[A-Za-z0-9]+$/', $dirname)) {
