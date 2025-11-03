@@ -53,7 +53,7 @@ class Date_Time {
 
     $pdo = new PdoMethods();
 
-    $query = "SELECT date_time, note_text FROM notes WHERE date_time BETWEEN :start AND :end ORDER BY date_time ASC";
+    $query = "SELECT date_time, note_text FROM notes WHERE date_time BETWEEN :start AND :end ORDER BY date_time DESC";
 
     $bindings = [[':start', $startTimestamp, 'int'],[':end', $endTimestamp, 'int']];
 
